@@ -1,0 +1,42 @@
+{
+	"name": "jblue_company",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "conum",
+				"type": "varchar"
+			},
+			{
+				"name": "coname",
+				"type": "varchar"
+			},
+			{
+				"name": "city",
+				"type": "varchar"
+			},
+			{
+				"name": "state",
+				"type": "varchar"
+			},
+			{
+				"name": "country",
+				"type": "varchar"
+			},
+			{
+				"name": "statename",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "jblue",
+			"table": "company"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

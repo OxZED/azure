@@ -1,0 +1,45 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "CODATA1",
+						"type": "DatasetReference"
+					},
+					"name": "codata"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable1",
+						"type": "DatasetReference"
+					},
+					"name": "states"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable2",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Filter1"
+				},
+				{
+					"name": "Join1"
+				},
+				{
+					"name": "AlterRow1"
+				}
+			],
+			"script": "source(output(\n\t\tconum as string,\n\t\tconame as string,\n\t\tcity as string,\n\t\tstate as string,\n\t\tcountry as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> codata\nsource(output(\n\t\tstatecode as string,\n\t\tstatename as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> states\ncodata filter(country == 'USA') ~> Filter1\nstates, Filter1 join(statecode == state,\n\tjoinType:'inner',\n\tbroadcast: 'auto')~> Join1\nJoin1 alterRow(upsertIf(1==1)) ~> AlterRow1\nAlterRow1 sink(input(\n\t\tconum as string,\n\t\tconame as string,\n\t\tcity as string,\n\t\tstate as string,\n\t\tcountry as string,\n\t\tstatename as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:true,\n\tkeys:['conum'],\n\tformat: 'table',\n\tmapColumn(\n\t\tconum,\n\t\tconame,\n\t\tcity,\n\t\tstate,\n\t\tcountry,\n\t\tstatename\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError') ~> sink1"
+		}
+	}
+}

@@ -1,0 +1,38 @@
+{
+	"name": "datalab3kubrick",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "datalab3kubrick_service",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "conum",
+				"type": "varchar"
+			},
+			{
+				"name": "coname",
+				"type": "varchar"
+			},
+			{
+				"name": "city",
+				"type": "varchar"
+			},
+			{
+				"name": "state",
+				"type": "varchar"
+			},
+			{
+				"name": "country",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "company"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
